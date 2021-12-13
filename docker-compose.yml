@@ -1,0 +1,31 @@
+version: '3.7'
+
+services:
+
+  mongo-db:
+    image: mongo
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+
+  server:
+    image: joelalca98/back
+    ports:
+      - '3000:3000'
+    links:
+      - mongo-db
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - proxy-tier
+
+networks:
+  db-tier:
+    driver: bridge
+  proxy-tier:
+    driver: bridge
+
+volumes:
+  mongo-data:
+   driver: local
